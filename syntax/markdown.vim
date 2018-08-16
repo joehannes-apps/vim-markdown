@@ -15,6 +15,15 @@ if !exists('g:markdown_flavor')
   let g:markdown_flavor = 'github'
 endif
 
+" default github indent lenght
+if !exists('g:markdown_indent_lenght')
+  let g:markdown_indent_lenght = 2
+  let g:markdown_indent_codeblock = 6
+" strict markdown indent lenght
+elseif g:markdown_indent_lenght == 4
+  let g:markdown_indent_codeblock = 4
+endif
+
 if exists('g:markdown_enable_conceal') && g:markdown_enable_conceal
     let b:markdown_concealends = 'concealends'
     let b:markdown_conceal = 'conceal'
@@ -360,8 +369,8 @@ execute 'syn match markdownTableHeader contained contains=@markdownInline '
 " {{{ NESTED BLOCKS
 
 for s:level in range(1, 16)
-  let s:indented_as_content = '\%( \{' . (2*s:level) . '}\|\t\{' . (s:level) . '}\)'
-  let s:indented_as_container = '\%( \{' . (2*(s:level-1)) . '}\|\t\{' . (s:level-1) . '}\)'
+  let s:indented_as_content = '\%( \{' . (g:markdown_indent_lenght*s:level) . '}\|\t\{' . (s:level) . '}\)'
+  let s:indented_as_container = '\%( \{' . (g:markdown_indent_lenght*(s:level-1)) . '}\|\t\{' . (s:level-1) . '}\)'
   let s:preceded_by_separator = '^\s*\n'
 
   execute 'syn region markdownListItemAtLevel' . (s:level) . ' '
@@ -404,7 +413,7 @@ for s:level in range(1, 16)
     \ . 'start='
     \ .   '/'
     \ .     (s:preceded_by_separator)
-    \ .     '\z( \{' . (2*s:level) . ',}\|\t\{' . (s:level) . ',}\)*```\%(`*\).*$'
+    \ .     '\z( \{' . (g:markdown_indent_lenght*s:level) . ',}\|\t\{' . (s:level) . ',}\)*```\%(`*\).*$'
     \ .   '/ '
     \ . 'end=/^\z1```\%(`*\)\s*$/'
   execute 'syn region markdownFencedCodeBlockInListItemAtLevel' . (s:level) . ' '
@@ -413,14 +422,14 @@ for s:level in range(1, 16)
     \ . 'start='
     \ .   '/'
     \ .     (s:preceded_by_separator)
-    \ .     '\z( \{' . (2*s:level) . ',}\|\t\{' . (s:level) . ',}\)*\~\~\~\%(\~*\).*$'
+    \ .     '\z( \{' . (g:markdown_indent_lenght*s:level) . ',}\|\t\{' . (s:level) . ',}\)*\~\~\~\%(\~*\).*$'
     \ .   '/ '
     \ . 'end=/^\z1\~\~\~\%(\~*\)\s*$/'
   execute 'hi def link markdownFencedCodeBlockInListItemAtLevel' . (s:level) . ' String'
 
   execute 'syn match markdownCodeBlockInListItemAtLevel' . (s:level) . ' '
     \ . 'contained contains=@NoSpell '
-    \ . '/' . (s:preceded_by_separator) . '\%(\%( \{' . (6+2*s:level)  . ',}\|\t\{' . (1+s:level) . ',}\).*\n\?\)\+$/'
+    \ . '/' . (s:preceded_by_separator) . '\%(\%( \{' . (g:markdown_indent_codeblock+g:markdown_indent_lenght*s:level)  . ',}\|\t\{' . (1+s:level) . ',}\).*\n\?\)\+$/'
   execute 'hi def link markdownCodeBlockInListItemAtLevel' . (s:level) . ' String'
 
   execute 'syn region markdownH1InListItemAtLevel' . (s:level) . ' '
