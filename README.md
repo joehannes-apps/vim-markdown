@@ -91,6 +91,7 @@ This section will contain preliminary documentation until full documentation is 
 * `let g:markdown_enable_spell_checking = 0` to disable spell checking (enabled by default with: `1`)
 * `let g:markdown_enable_input_abbreviations = 0` to disable abbreviations for punctuation and emoticons (enabled by default with: `1`)
 * `let g:markdown_enable_conceal = 1` to enable conceal for italic, bold, inline-code and link text (disabled by default with: `0`)
+* `let g:markdown_indent_lenght = 4` to define the strict Markdown indentation length. Without this, level-based syntax highlighting will not work. The default indentation length is `2` to match the GitHub Markdown flavor.
 
 ### Default Mappings (normal and visual mode)
 _mappings are local to markdown buffers_
