@@ -6,6 +6,10 @@ if !exists('g:markdown_flavor')
   let g:markdown_flavor = 'github'
 endif
 
+if !exists('g:markdown_indent_lenght')
+  let g:markdown_indent_lenght = 2
+endif
+
 if !exists('g:markdown_enable_folding')
   let g:markdown_enable_folding = 0
 endif
@@ -54,7 +58,7 @@ endif
 " {{{ OPTIONS
 
 setlocal textwidth=0
-setlocal ts=2 sw=2 expandtab smarttab
+execute 'setlocal ts=' . g:markdown_indent_lenght . ' sw='  . g:markdown_indent_lenght . ' expandtab smarttab'
 setlocal comments=b:*,b:-,b:+,n:>,se:``` commentstring=>\ %s
 setlocal formatoptions=tron
 setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\\|^\\s*[+-\\*]\\s\\+
